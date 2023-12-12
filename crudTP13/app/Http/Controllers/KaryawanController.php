@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class KaryawanController extends Controller
 {
 
+
     public function index()
     {
         $karyawan = KaryawanModel::orderBy('created_at', 'DESC')->get();
@@ -55,5 +56,11 @@ class KaryawanController extends Controller
         $karyawan->delete();
 
         return redirect()->route('karyawan.index')->with('success', 'Data berhasil dihapus');
+    }
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $karyawan = KaryawanModel::where('nama', 'like', "%" . $search . "%")->paginate();
+        return view('karyawan.index', ['karyawan' => $karyawan]);
     }
 }

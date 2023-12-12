@@ -2,6 +2,14 @@
 @section('body')
     <div class="container d-flex align-items-center justify-content-between">
         <h1 class="mb-1">Data Karyawan</h1>
+        {{-- tambahkan search disini  --}}
+        <div class="input-group rounded">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" id="search"
+                aria-describedby="search-addon" />
+            <span class="input-group-text border-0" id="search-addon">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
         <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Tambah Data</a>
     </div>
     @if (Session::has('success'))
@@ -64,12 +72,27 @@
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function deleteKaryawan(id) {
                 var url = "{{ route('karyawan.destroy', ':id') }}";
                 url = url.replace(':id', id);
                 document.getElementById('deleteForm').action = url;
                 $('#deleteModal').modal('show');
+            }
+
+            $('#search').on('keyup', function() {
+                search();
+            });
+
+            function search() {
+                var value = $('#search').val();
+                $.post("{{ route('karyawan.search') }}", {
+                    '_token': '{{ csrf_token() }}',
+                    'search': value
+                }, function(data) {
+                    $('tbody').html(data);
+                });
             }
         </script>
     @endsection

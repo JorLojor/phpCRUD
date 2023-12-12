@@ -10,3 +10,5 @@ Route::get('/', function () {
 Route::resource('/karyawan', KaryawanController::class);
 
 Route::post('/karyawan/create', [KaryawanController::class, 'store'])->name('karyawan.store');
+
+Route::post('/karyawan/search', [KaryawanController::class, 'search'])->name('karyawan.search');
